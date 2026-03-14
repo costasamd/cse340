@@ -1,5 +1,6 @@
 {
   "name": "cse340",
+  "type": "module",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -19,7 +20,8 @@
   "homepage": "https://github.com/costasamd/cse340#readme",
   "dependencies": {
     "ejs": "^5.0.1",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "pg": "^8.20.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"

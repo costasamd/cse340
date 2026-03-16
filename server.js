@@ -4,7 +4,7 @@ import path from 'path';
 import { testConnection } from './src/models/db.js'
 import { getAllOrganizations } from './src/models/organization.js';
 import { getAllProjects } from './src/models/projects.js';
-
+import { displayCategories } from './src/models/categories.js';
 
 //environment variables
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
@@ -66,10 +66,12 @@ app.get('/projects', async (req, res) => {
     res.render('projects', {title, projects});
 });
 
-app.get('/categories', (req, res) => {
-   
+app.get('/categories', async (req, res) => {
+    
+    const categories = await displayCategories();
+
     const title = 'Categories';
-    res.render('categories', { title });
+    res.render('categories', { title, categories });
 });
 
 //Port

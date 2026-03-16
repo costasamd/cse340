@@ -40,3 +40,30 @@ VALUES (1, 'Argonaut Planter Boxes', 'We will build planter boxes at Argonaut El
 	(3, 'Food Pantry Setup', 'We will set up a food pantry to support low-income families in our community', 'Local Elementary School', '2027-01-10'),
 	(3, 'Book Donation Campaign', 'We will collect and donate books to underprivileged children', 'Local Library', '2027-02-15'),
 	(3, 'Toys for Tots Drive', 'We will organize a toy drive to provide gifts for children in need during the holidays', 'City Hall', '2027-03-01');
+
+CREATE TABLE categories (
+	category_id SERIAL PRIMARY KEY,
+	name VARCHAR(255) NOT NULL
+);
+
+INSERT INTO categories (name)
+VALUES
+	('Public area'),
+	('Family service'),
+	('Education sector'),
+	('Children support');
+
+CREATE TABLE project_cat(
+	project_id INT,
+	category_id INT,
+
+	PRIMARY KEY(project_id, category_id),
+
+	FOREIGN KEY (project_id) REFERENCES service_projects (project_id) ON DELETE CASCADE,
+	FOREIGN KEY (category_id) REFERENCES categories (category_id) ON DELETE CASCADE
+);
+
+INSERT INTO project_cat(project_id, category_id)
+VALUES
+(2,1), (3,1), (4,1), (5,1), (7,1), (11,1), (4,2), (5,2), (6,2), (12,2), (13,2), (14,2), (15,2),
+(5,3), (6,3), (8,3), (5,4), (14,4), (15,4), (1,3), (9,1), (10,3); 

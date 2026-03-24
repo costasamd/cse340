@@ -12,7 +12,16 @@
         <p>Description: <%= projectDetail.description %></p>
         <p><strong>Date: <%= projectDetail.formatted_date %></strong></p>
         <p><strong>Location: <%= projectDetail.location %></strong></p>
-        <a href="/organization/<%= projectDetail.organization_id %>"><%= projectDetail.name %></a>
+        <h3><a href="/organization/<%= projectDetail.organization_id %>"><%= projectDetail.name %></a></h3>
+        
+        <ul>
+            <% categoryTag.forEach(tag => { %>
+                <li>
+                    <p><a href="/category/<%= tag.category_id %>"><%= tag.name %></a></p>
+                </li>
+            <% }); %>
+        </ul>
+
         
     </main>
 

@@ -3,6 +3,9 @@ import { fileURLToPath } from 'url'
 import path from 'path';
 import { testConnection } from './src/models/db.js'
 import router from './src/controller/routes.js';
+import session from 'express-session';
+import flash from './src/middleware/flash.js';
+
 /**
  * import { getAllOrganizations } from './src/models/organization.js';
 import { getAllProjects } from './src/models/projects.js';
@@ -23,6 +26,20 @@ const app = express();
 /**
  * configure Express middleware
  */
+
+app.use(session({
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 60 * 60 * 1000 } //session finish after 1hr inactive
+}));
+
+//use flash message middleware
+app.use(flash);
+
+//Allow Express to receive and process common POST data
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // serve static files from the public directory
 

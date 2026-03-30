@@ -66,6 +66,9 @@ const updateCategoryAssignment = async (projectId, categoryIds) => {
 
     await db.query(deleteQuery, [projectId]);
 
+    //test the passing data
+    console.log('categoryIds:', categoryIds);
+    console.log('type:', typeof projectId);
     //Then assign the new category to the project
     for (const categoryId of categoryIds) {
         await assingCategoryToProject(projectId, categoryId);

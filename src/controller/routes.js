@@ -6,7 +6,7 @@ import {
     showEditOrganizationForm, processNewOrganizationForm, organizationValidation, processEditOrganizationForm
 } from './organizations.js';
 import { showProjectsPage, showProjectDatailsPage ,showNewProjectForm, projectValidation ,processNewProjectForm, showEditProjectForm, processEditProjectForm } from './projects.js';
-import { showCategoriesPage,showCategoryDetailPage, showAssingCategoryForm, processAssignCategoriesForm } from './categories.js';
+import { showCategoriesPage,showCategoryDetailPage, showAssingCategoryForm, processAssignCategoriesForm, showNewCategoryForm, processNewCategoryForm, categoryValidation } from './categories.js';
 import { errorTestPage } from './errors.js';
 
 
@@ -24,6 +24,7 @@ router.get('/edit-organization/:id', showEditOrganizationForm);
 router.get('/new-project', showNewProjectForm);
 router.get('/assign-categories/:projectId', showAssingCategoryForm);
 router.get('/edit-project/:id', showEditProjectForm);
+router.get('/new-category', showNewCategoryForm);
 
 //route to handle new organization submission
 router.post('/new-organization', organizationValidation, processNewOrganizationForm);
@@ -31,6 +32,7 @@ router.post('/edit-organization/:id', organizationValidation ,processEditOrganiz
 router.post('/new-project', projectValidation, processNewProjectForm);
 router.post('/assign-categories/:projectId', processAssignCategoriesForm);
 router.post('/edit-project/:id', processEditProjectForm);
+router.post('/new-category', categoryValidation, processNewCategoryForm);
 
 // error-handling routes
 router.get('/test-error', errorTestPage);

@@ -83,4 +83,37 @@ const showDashboard = (req, res) => {
     });
 };
 
-export { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, requireLogin, showDashboard };
+const requireRole = (role) => {
+    return (req, res, next) => {
+        // Check if user is logged in first
+        if (!req.session || !req.session.user) {
+            req.flash('error', 'You must be logged in to access this page.');
+            return res.redirect('/login');
+        }
+
+        // Check if user's role matches the required role
+        if (req.session.user.role_name !== role) {
+            req.flash('error', 'You do not have permission to access this page.');
+            return res.redirect('/');
+        }
+
+        // User has required role, continue
+        next();
+    };
+};
+
+//factory function to create middleware that checks for specific user roles
+/*const requireRole = (role) => {
+    return (req, res, next) => {
+        if (req.session.user && req.session.user.roles_name === role) {
+            next();
+        } else {
+            req.flash('error', 'You do not have permission to access that page.');
+            res.redirect('/');
+        }
+
+    }
+
+} */
+
+export { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, requireLogin, showDashboard, requireRole };

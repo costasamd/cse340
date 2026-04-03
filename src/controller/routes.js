@@ -10,7 +10,7 @@ import { showCategoriesPage,showCategoryDetailPage, showAssingCategoryForm, proc
 import { errorTestPage } from './errors.js';
 import {
     showUserRegistrationForm, processUserRegistrationForm, showLoginForm,
-    processLoginForm, processLogout, showDashboard, requireLogin, requireRole
+    processLoginForm, processLogout, showDashboard, requireLogin, requireRole, showAllUsers
 } from './users.js';
 
 
@@ -34,6 +34,8 @@ router.get('/register', showUserRegistrationForm);
 router.get('/login', showLoginForm);
 router.get('/logout', processLogout);
 router.get('/dashboard', requireLogin, showDashboard);
+router.get('/users', requireRole('admin'), showAllUsers);
+
 
 
 //route to handle new organization submission

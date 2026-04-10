@@ -73,6 +73,36 @@ const authenticateUser = async (email, password) => {
     return user; // Authentication successful
 };
 
+const assignUserToProject = async (projectId, userId) => {
+    const query = `
+        INSERT INTO volunters (project_id, user_id)
+        VALUES ($1, $2);
+        `;
+    
+    await db.query(query, [projectId, userId]);
+};
+
+const updateUserAssignment = async (projectId, userIds) => {
+    //first remove existinf assignment for the project user
+    const deletequery = `
+    DELETE FROM volunters
+    WHERE project_id = $1;
+    `;
+
+    await db.query(deletequery, [projectId]);
+
+    //test the passing data
+    console.log('userIds:', userIds);
+    console.log('type:', typeof projectId);
+
+    //then assign the new user to the project
+    for (const userId of userIds) {
+        await assignUserToProject(projectId, userId);
+    }
+};
 
 
-export { createUser, authenticateUser, getAllUsers };
+
+
+
+export { createUser, authenticateUser, getAllUsers, updateUserAssignment };

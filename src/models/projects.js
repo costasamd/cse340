@@ -152,5 +152,26 @@ const updateProject = async (projectId, title, description, location, date, orga
   return result.rows[0].project_id;
 };
 
+const getProjectsByUserId = async (userId) => {
+  const query = `
+  SELECT sp.project_id,
+  sp.title,
+  sp.decription,
+  u.user_id,
+  u.name,
+  FROM service_projects AS sp
+  JOIN volunters AS v
+  ON sp.project_id = v.project_id
+  JOIN users AS u
+  ON v.user_id = u.user_id
+  WHERE u.user_id = $1;
+  `;
 
-export { getAllProjects, getProjectsByOrganizationId, getUpcomingProjects, getProjectDetails, getProjectsByCategory, createProject, updateProject };
+  const query_params = [userId];
+  const result = await db.query(query, query_params);
+
+  return result.rows;
+};
+
+
+export { getAllProjects, getProjectsByOrganizationId, getUpcomingProjects, getProjectDetails, getProjectsByCategory, createProject, updateProject, getProjectsByUserId };

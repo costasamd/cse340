@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
-import { createUser, authenticateUser, getAllUsers } from '../models/users.js';
+import { createUser, authenticateUser, getAllUsers, updateUserAssignment } from '../models/users.js';
+import { getProjectsByUserId } from '../models/projects.js';
 
 const showUserRegistrationForm = (req, res) => {
     res.render('register', { title: 'Register' });
@@ -122,6 +123,19 @@ const showAllUsers = async (req, res) => {
     const title = 'All Users';
 
     res.render('users', { title, users });
+};
+
+const showProjectsForUser = async (req, res) => {
+    const userId = req.params.id;
+    const projects = await getProjectsByUserId(userId);
+
+    const title = 'Projects for you singed up for';
+
+    res.render('projects', { title, projects });
+};
+
+const processUpdateUserAssignment = async (req, res) => {
+    
 }
 
 export { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, requireLogin, showDashboard, requireRole, showAllUsers };

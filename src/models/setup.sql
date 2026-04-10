@@ -86,3 +86,17 @@ password_hash VARCHAR(255) NOT NULL,
 roles_id INT REFERENCES roles(roles_id),
 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE volunters (
+project_id INT,
+user_id INT,
+
+PRIMARY KEY(project_id, user_id),
+
+FOREIGN KEY (project_id) REFERENCES service_projects(project_id) ON DELETE CASCADE,
+FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
+INSERT INTO volunters (project_id, user_id)
+VALUES (1,6), (1,3), (1,4), (2,4), (2,5), (3,4), (3,5), (3,2), (5,3),(5,2), (6,3), (6,4), (6,5),
+(8,2),(8,5), (8,6);

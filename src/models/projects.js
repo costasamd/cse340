@@ -156,9 +156,9 @@ const getProjectsByUserId = async (userId) => {
   const query = `
   SELECT sp.project_id,
   sp.title,
-  sp.decription,
+  sp.description,
   u.user_id,
-  u.name,
+  u.name
   FROM service_projects AS sp
   JOIN volunters AS v
   ON sp.project_id = v.project_id

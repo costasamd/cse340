@@ -98,5 +98,5 @@ FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 INSERT INTO volunters (project_id, user_id)
-VALUES (1,6), (1,3), (1,4), (2,4), (2,5), (3,4), (3,5), (3,2), (5,3),(5,2), (6,3), (6,4), (6,5),
-(8,2),(8,5), (8,6);
+VALUES (1,5), (1,2), (1,3), (2,3), (2,5), (3,3), (3,4), (3,1), (5,2),(5,1), (6,2), (6,3), (6,4),
+(8,1),(8,4), (8,5);

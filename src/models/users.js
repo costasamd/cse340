@@ -105,4 +105,4 @@ const updateUserAssignment = async (projectId, userIds) => {
 
 
 
-export { createUser, authenticateUser, getAllUsers, updateUserAssignment };
+export { createUser, authenticateUser, getAllUsers, assignUserToProject ,updateUserAssignment };

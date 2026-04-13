@@ -3,6 +3,7 @@ import { getAllProjects, getUpcomingProjects, getProjectDetails, createProject, 
 import { getCategoryByProjectId } from '../models/categories.js';
 import { getAllOrganizations } from '../models/organization.js';
 import { body, validationResult } from 'express-validator';
+import { checkUserAssignment } from '../models/users.js';
 
 const projectValidation = [
     body('title')
@@ -36,10 +37,19 @@ const showProjectsPage = async (req, res) => {
 
 const showProjectDatailsPage = async (req, res) => {
     const projectId = req.params.id;
+    const userId = req.session?.user?.user_id;
+    
     const projectDetail = await getProjectDetails(projectId);
     const categoryTag = await getCategoryByProjectId(projectId);
+
+    let isAssigned = false;
+
+    if (userId) {
+        isAssigned = await checkUserAssignment(userId, projectId);
+    }
+
     const title = 'Project Detail';
-    res.render('project', { title, projectDetail, categoryTag })
+    res.render('project', { title, projectDetail, categoryTag, isAssigned });
 };
 
 const showNewProjectForm = async (req, res) => {

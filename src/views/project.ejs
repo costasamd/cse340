@@ -22,11 +22,16 @@
             <% }); %>
         </ul>
 
-        <% if(isLoggedIn) { %>
-            <!-- here goes a link to users vonlunteer for projects,
-             the link must execute a function to user assign it self as a volunteer for this porjct-->
-            
+        <% if (isLoggedIn) { %>
+
+            <% if (isAssigned) { %>
+                <p>You are assigned to this project.</p>
+            <% } else { %>
+                <form action="/projects/assign/<%= projectDetail.project_id %>" method="post">
+                    <button type="submit">Volunteer for this project</button>
+                </form>
             <% }; %>
+        <% } %>
 
         <% if (user && user.roles_name === 'admin') { %>
             <p><a href="/assign-categories/<%= projectDetail.project_id %>">Edit Categories</a></p>

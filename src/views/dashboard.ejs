@@ -12,6 +12,21 @@
         <p>Username: <%= email %>
         </p>
         
+        <ul>
+            <% if (projects.length > 0) { %>
+                <% projects.forEach(project => { %>
+                    <li>
+                        <h3><%= project.title %></h3>
+                        <form action="/projects/remove/<%= project.project_id %>" method="post" style="display:inline;">
+                            <button type="submit">Remove Me</button>
+                        </form>
+                    </li>
+                <% }) %>
+            <% } else { %>
+                <li>No projects assigned.</li>
+            <% } %>
+        </ul>
+
         <% if (user && user.roles_name==='admin' ) { %>
             <p><a href="/users">View All Users</a></p>
             <% } %>

@@ -73,36 +73,49 @@ const authenticateUser = async (email, password) => {
     return user; // Authentication successful
 };
 
-const assignUserToProject = async (projectId, userId) => {
-    const query = `
-        INSERT INTO volunters (project_id, user_id)
-        VALUES ($1, $2);
-        `;
-    
-    await db.query(query, [projectId, userId]);
-};
-
-const updateUserAssignment = async (projectId, userIds) => {
-    //first remove existinf assignment for the project user
-    const deletequery = `
-    DELETE FROM volunters
-    WHERE project_id = $1;
+const removeMeFromProject = async (userId, projectId) => {
+    try {
+        const query = `
+        DELETE FROM volunters
+        WHERE user_id = $1 AND project_id = $2
     `;
 
-    await db.query(deletequery, [projectId]);
+        return await db.query(query, [userId, projectId]);
+    } catch (error) {
+        console.error('Error removing user from project:', error);
+        throw error;
+    };
+    
+};
 
-    //test the passing data
-    console.log('userIds:', userIds);
-    console.log('type:', typeof projectId);
+const assignUserToProject = async (userId, projectId) => {
+    try {
+        const query = `
+        INSERT INTO volunters (user_id, project_id)
+        VALUES ($1, $2);
+    `;
 
-    //then assign the new user to the project
-    for (const userId of userIds) {
-        await assignUserToProject(projectId, userId);
-    }
+        return await db.query(query, [userId, projectId]);
+    } catch (error) {
+        console.error('Error assigning user to project:', error);
+        throw error;
+    };
+};
+
+//create a check condition for assigned user
+const checkUserAssignment = async (userId, projectId) => {
+    const query = `
+        SELECT 1
+        FROM volunters
+        WHERE user_id = $1 AND project_id = $2
+        LIMIT 1;
+        `;
+    
+    const result = await db.query(query, [userId, projectId]);
+
+    return result.rows.length > 0;
 };
 
 
 
-
-
-export { createUser, authenticateUser, getAllUsers, assignUserToProject ,updateUserAssignment };
+export { createUser, authenticateUser, getAllUsers, removeMeFromProject, assignUserToProject, checkUserAssignment };

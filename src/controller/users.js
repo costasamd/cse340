@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { createUser, authenticateUser, getAllUsers } from '../models/users.js';
+import { createUser, authenticateUser, getAllUsers, removeMeFromProject, assignUserToProject } from '../models/users.js';
 import { getProjectsByUserId } from '../models/projects.js';
 
 const showUserRegistrationForm = (req, res) => {
@@ -82,6 +82,7 @@ const showDashboard = (req, res) => {
         title: 'Dashboard',
         name: user.name,
         email: user.email,
+        projects: req.projects || []
     });
 };
 
@@ -126,5 +127,52 @@ const showAllUsers = async (req, res) => {
     res.render('users', { title, users });
 };
 
+const displayProjectsByUser = async (req, res, next) => {
 
-export { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, requireLogin, showDashboard, requireRole, showAllUsers };
+    const userId = req.session.user.user_id;
+
+    console.log('session user ID:', userId);
+
+    const projects = await getProjectsByUserId(userId);
+
+    console.log('projects from db:', projects);
+
+    req.projects = projects || [];
+
+    next();
+}
+
+const removeUserFromProject = async (req, res) => {
+    const userId = req.session.user.user_id;
+    const projectId = req.params.projectId;
+
+    try {
+        await removeMeFromProject(userId, projectId);
+        req.flash('success', 'You have been removed from the project.');
+    }
+    catch (error) {
+        console.error('Error removing user from project:', error);
+        req.flash('error', 'An error occurred while trying to remove you from the project. Please try again.');
+    }
+
+    res.redirect('/dashboard');
+};
+
+const assignUserToThisProject = async (req, res) => {
+    const userId = req.session.user.user_id;
+    const projectId = req.params.project_id || req.params.projectId; // Handle both cases where project ID might come from URL params
+
+    try {
+        await assignUserToProject(userId, projectId);
+        req.flash('success', 'You have been added to the project.');
+    }catch (error) {
+        console.error('Error assigning user to project:', error);
+        req.flash('error', 'An error occurred while trying to add you to the project. Please try again.');
+    }
+
+    res.redirect(`/project/${projectId}`);
+};
+
+
+
+export { showUserRegistrationForm, processUserRegistrationForm, showLoginForm, processLoginForm, processLogout, requireLogin, showDashboard, requireRole, showAllUsers, displayProjectsByUser, removeUserFromProject, assignUserToThisProject };
